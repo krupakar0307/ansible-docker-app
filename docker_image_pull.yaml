@@ -1,0 +1,26 @@
+---
+- hosts: localhost
+  connection: local  
+  tasks:
+    - name: Build image using cache source
+      community.docker.docker_image:
+        name: myimage:latest
+        build:
+          path: .
+          # Use as cache source for building myimage
+          cache_from:
+            - ubuntu:latest
+            # - alpine:3.8
+        source: build
+    - name: Container present
+      community.docker.docker_container:
+        name: mycontainer
+        state: started
+        image: myimage:latest
+        # restart: true
+        ports:
+          - "8280:80"
+    # - name: container start.....
+    #   com
+
+
